@@ -1,0 +1,25 @@
+version: '1'
+services:
+  database:
+    image: postgres:latest
+    container_name: 'postgres-dev2'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+
+  cloudapp:
+    image: 'cloudapp:latest'
+    container_name: 'cloudapp'
+    build: .
+    ports:
+      - '8081:8081'
+    depends_on:
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+
